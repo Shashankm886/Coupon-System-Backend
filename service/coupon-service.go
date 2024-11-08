@@ -160,7 +160,7 @@ func (service *couponService) RedeemCoupon(request models.RedeemCouponRequest, c
 	}
 
 	ruleData := models.CouponRuleData{
-		DiscountPercent:  float64(coupon.Usage),
+		Usage:            coupon.Usage,
 		ExpiryDate:       coupon.ExpiryDate,
 		MinOrderAmount:   coupon.OrderContent.MinAmount,
 		MinOrderItems:    coupon.OrderContent.NumberOfItems,

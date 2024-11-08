@@ -9,7 +9,7 @@ rule CheckCouponExpiry "Check if the coupon has expired" {
 
 rule CheckCouponUsage "Check if the coupon usage limit is reached" {
     when
-        CouponRuleData.DiscountPercent <= 0
+        CouponRuleData.Usage <= 0
     then
         CouponRuleData.CouponValid = false;
         CouponRuleData.Message = "Coupon usage exhausted";

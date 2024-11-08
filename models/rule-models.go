@@ -6,7 +6,8 @@ import (
 
 type CouponRuleData struct {
 	// Coupon-specific fields
-	DiscountPercent float64   // Discount percentage
+	DiscountPercent float64 // Discount percentage
+	Usage           int
 	ExpiryDate      time.Time // Expiry date of the coupon
 	IsFrequent      bool      // Indicates if the user is marked as frequent
 	MinOrderAmount  int       // Minimum order amount for coupon validity
