@@ -1,0 +1,45 @@
+rule CheckCouponExpiry "Check if the coupon has expired" {
+    when
+        CouponRuleData.CurrentTime.After(CouponRuleData.ExpiryDate)
+    then
+        CouponRuleData.CouponValid = false;
+        CouponRuleData.Message = "Coupon has expired";
+        Retract("CheckCouponExpiry");
+}
+
+rule CheckCouponUsage "Check if the coupon usage limit is reached" {
+    when
+        CouponRuleData.DiscountPercent <= 0
+    then
+        CouponRuleData.CouponValid = false;
+        CouponRuleData.Message = "Coupon usage exhausted";
+        Retract("CheckCouponUsage");
+}
+
+rule CheckOrderContent "Validate minimum order requirements" {
+    when
+        CouponRuleData.OrderAmount < CouponRuleData.MinOrderAmount || CouponRuleData.OrderItemCount < CouponRuleData.MinOrderItems
+    then
+        CouponRuleData.CouponValid = false;
+        CouponRuleData.Message = "Order content does not meet minimum requirements";
+        Retract("CheckOrderContent");
+}
+
+rule CheckProfileInfo "Validate profile info" {
+    when
+        CouponRuleData.ProfileInfoExists == true && CouponRuleData.ProfileUsername != CouponRuleData.ExpectedUsername
+    then
+        Log("Profile info mismatch: expected " + CouponRuleData.ProfileUsername + ", got " + CouponRuleData.ExpectedUsername);
+        CouponRuleData.CouponValid = false;
+        CouponRuleData.Message = "Username does not match profile info";
+        Retract("CheckProfileInfo");
+}
+
+rule CheckOrderHistory "Validate order history requirements" {
+    when
+        CouponRuleData.OrderHistoryExists && !CouponRuleData.HasMinimumOrders
+    then
+        CouponRuleData.CouponValid = false;
+        CouponRuleData.Message = "User has not met minimum order requirements";
+        Retract("CheckOrderHistory");
+}

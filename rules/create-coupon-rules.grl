@@ -1,0 +1,17 @@
+rule CheckRequiredFields "Ensure required fields are present" {
+    when
+        CouponRuleData.DiscountPercent == 0 || CouponRuleData.ExpiryDate.IsZero()
+    then
+        CouponRuleData.CouponValid = false;
+        CouponRuleData.Message = "Missing required fields";
+        Retract("CheckRequiredFields");
+}
+
+rule CheckUserExists "Check if user exists for coupon profile info" {
+    when
+        CouponRuleData.ProfileInfoExists == true
+    then
+        CouponRuleData.CouponValid = true;
+        CouponRuleData.Message = "Username exists, proceeding with validation";
+        Retract("CheckUserExists");
+}

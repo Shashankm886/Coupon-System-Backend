@@ -37,7 +37,7 @@ func (c *controller) Create(ctx *gin.Context, couponsCollection *mongo.Collectio
 
 	createdCoupon, err := c.service.Create(coupon, couponsCollection, userCollection)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Error creating coupon"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -52,13 +52,13 @@ func (c *controller) Redeem(ctx *gin.Context, couponsCollection, userCollection 
 	}
 
 	// Call the redeem function from the service
-	success, err := c.service.RedeemCoupon(request, couponsCollection, userCollection, ordersCollection)
+	status, err := c.service.RedeemCoupon(request, couponsCollection, userCollection, ordersCollection)
 	if err != nil {
 		return false, err
 	}
 
-	// Return the success response
-	if success {
+	// Return the status response
+	if status {
 		return true, nil
 	} else {
 		return false, nil

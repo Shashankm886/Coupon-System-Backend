@@ -43,8 +43,8 @@ type ListCoupon struct {
 }
 
 type RedeemCouponRequest struct {
-	CouponCode  string  `json:"coupon_code" binding:"required"`
-	OrderAmount float64 `json:"order_amount" binding:"required"`
-	NumItems    int     `json:"num_items" binding:"required"`
-	Username    string  `json:"username" binding:"required"`
+	CouponCode  string `json:"coupon_code" binding:"required"`
+	OrderAmount int    `json:"order_amount" binding:"required"`
+	NumItems    int    `json:"num_items" binding:"required"`
+	Username    string `json:"username" binding:"required"`
 }
